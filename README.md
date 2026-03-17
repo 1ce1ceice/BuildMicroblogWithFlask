@@ -1,6 +1,6 @@
 # Build a Microblog with Flask 
 
-## ❓ Описание
+## :question: Описание
 
 это веб-приложение для публикации коротких текстовых постов.  
 Проект реализован в рамках практики на основе проекта из репозитория  
@@ -27,7 +27,7 @@ https://github.com/practical-tutorials/project-based-learning (раздел Pyth
 - **Frontend:** HTML, CSS, Jinja2  
 - **Deployment:** Render  
 
-## Установка
+## :exclamation: Установка
 
 1. Клонируйте репозиторий 
 ```bash
