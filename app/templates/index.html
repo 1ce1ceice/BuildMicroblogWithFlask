@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Главная | Build a Microblog with Flask{% endblock %}
+
+{% block content %}
+<section class="card">
+    <h1>Для практики</h1>
+
+    {% if current_user.is_authenticated %}
+        <p>Привет, {{ current_user.username }}! Ты вошел в систему.</p>
+    {% else %}
+        <p>Микро-блог на Flask.</p>
+        <p>Зарегистрируйтесь или войдите, чтобы продолжить.</p>
+    {% endif %}
+</section>
+{% endblock %}
