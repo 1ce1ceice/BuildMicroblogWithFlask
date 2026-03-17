@@ -118,3 +118,56 @@ textarea {
     font-size: 14px;
     margin-top: 6px;
 }
+
+.post {
+    padding: 16px;
+    border-radius: 10px;
+    background: #f1f5f9;
+    margin-top: 16px;
+}
+
+.post-body {
+    font-size: 16px;
+    margin-bottom: 12px;
+    white-space: pre-wrap;
+}
+
+.post-meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: 14px;
+    color: #475569;
+    margin-bottom: 12px;
+}
+
+.post-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.btn-secondary {
+    background: #64748b;
+    color: white;
+    text-decoration: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    display: inline-block;
+}
+
+.btn-secondary:hover {
+    background: #475569;
+}
+
+.btn-danger {
+    background: #dc2626;
+}
+
+.btn-danger:hover {
+    background: #b91c1c;
+}
+
+.profile-posts {
+    margin-top: 20px;
+}

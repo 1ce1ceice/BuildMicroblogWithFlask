@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Редактировать пост | Build a Microblog with Flask{% endblock %}
+
+{% block content %}
+<section class="card form-card">
+    <h1>Редактировать пост</h1>
+
+    <form method="POST">
+        {{ form.hidden_tag() }}
+
+        <div class="form-group">
+            {{ form.body.label }}
+            {{ form.body(class="form-input", rows="6") }}
+            {% for error in form.body.errors %}
+                <p class="error">{{ error }}</p>
+            {% endfor %}
+        </div>
+
+        {{ form.submit(class="btn") }}
+    </form>
+</section>
+{% endblock %}

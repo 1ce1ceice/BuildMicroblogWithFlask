@@ -1,19 +1,16 @@
-from flask import render_template, redirect, url_for, flash, request
+from flask import render_template, redirect, url_for, flash, request, abort
 from flask_login import login_user, logout_user, login_required, current_user
-from app import db
-from app.models import User
-from app.forms import RegisterForm, LoginForm
 from werkzeug.security import generate_password_hash
-from app import create_app
-from app.models import Post
-from app.forms import PostForm
+from app import db, create_app
+from app.models import User, Post
+from app.forms import RegisterForm, LoginForm, PostForm
 
 app = create_app()
 
-
 @app.route("/")
 def index():
-    return render_template("index.html")
+    posts = Post.query.order_by(Post.created_at.desc()).all()
+    return render_template("index.html", posts=posts)
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -35,7 +32,10 @@ def register():
         user = User(
             username=form.username.data,
             email=form.email.data,
-            password_hash=generate_password_hash(form.password.data, method="pbkdf2:sha256"),
+            password_hash=generate_password_hash(
+                form.password.data,
+                method="pbkdf2:sha256"
+            ),
         )
 
         db.session.add(user)
@@ -78,3 +78,67 @@ def logout():
     logout_user()
     flash("Вы вышли из аккаунта", "info")
     return redirect(url_for("index"))
+
+
+@app.route("/posts/create", methods=["GET", "POST"])
+@login_required
+def create_post():
+    form = PostForm()
+
+    if form.validate_on_submit():
+        post = Post(
+            body=form.body.data,
+            author=current_user
+        )
+        db.session.add(post)
+        db.session.commit()
+
+        flash("Пост успешно создан", "success")
+        return redirect(url_for("index"))
+
+    return render_template("create_post.html", form=form)
+
+
+@app.route("/posts/<int:post_id>/edit", methods=["GET", "POST"])
+@login_required
+def edit_post(post_id):
+    post = Post.query.get_or_404(post_id)
+
+    if post.author != current_user:
+        abort(403)
+
+    form = PostForm()
+
+    if form.validate_on_submit():
+        post.body = form.body.data
+        db.session.commit()
+
+        flash("Пост обновлен", "success")
+        return redirect(url_for("index"))
+
+    if request.method == "GET":
+        form.body.data = post.body
+
+    return render_template("edit_post.html", form=form, post=post)
+
+
+@app.route("/posts/<int:post_id>/delete", methods=["POST"])
+@login_required
+def delete_post(post_id):
+    post = Post.query.get_or_404(post_id)
+
+    if post.author != current_user:
+        abort(403)
+
+    db.session.delete(post)
+    db.session.commit()
+
+    flash("Пост удален", "info")
+    return redirect(url_for("index"))
+
+
+@app.route("/profile/<username>")
+def profile(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    posts = Post.query.filter_by(author=user).order_by(Post.created_at.desc()).all()
+    return render_template("profile.html", user=user, posts=posts)
