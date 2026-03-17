@@ -49,7 +49,9 @@ pip install -r requirements.txt
 ## Запуск
 
 ```bash
-python run.py
+python3 run.py
 ```
 
 ## 🌍 Deployment
+
+Live demo: https://buildmicroblogwithflask.onrender.com/
