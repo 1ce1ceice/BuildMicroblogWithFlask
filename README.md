@@ -1,6 +1,6 @@
 # Build a Microblog with Flask 
 
-[![Maintainability](https://qlty.sh/gh/1ce1ceice/projects/BuildMicroblogWithFlask/maintainability.svg)](https://qlty.sh/gh/1ce1ceice/projects/BuildMicroblogWithFlask)
+[![Maintainability](https://api.codeclimate.com/v1/badges/ID/maintainability)](https://codeclimate.com/github/логин/репо/maintainability)
 
 ## :question: Описание
 
