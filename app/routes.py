@@ -1,22 +1,23 @@
-from flask import render_template, redirect, url_for, flash, request, abort
+from flask import render_template, redirect, url_for, flash, request, abort, Blueprint
 from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash
-from app import db, create_app
+from app import db
 from app.models import User, Post
 from app.forms import RegisterForm, LoginForm, PostForm
 
-app = create_app()
+bp = Blueprint("main", __name__)
 
-@app.route("/")
+
+@bp.route("/")
 def index():
     posts = Post.query.order_by(Post.created_at.desc()).all()
     return render_template("index.html", posts=posts)
 
 
-@app.route("/register", methods=["GET", "POST"])
+@bp.route("/register", methods=["GET", "POST"])
 def register():
     if current_user.is_authenticated:
-        return redirect(url_for("index"))
+        return redirect(url_for("main.index"))
 
     form = RegisterForm()
 
@@ -27,7 +28,7 @@ def register():
 
         if existing_user:
             flash("Пользователь с таким именем или email уже существует", "danger")
-            return redirect(url_for("register"))
+            return redirect(url_for("main.register"))
 
         user = User(
             username=form.username.data,
@@ -42,15 +43,15 @@ def register():
         db.session.commit()
 
         flash("Регистрация прошла успешно. Теперь войдите в систему.", "success")
-        return redirect(url_for("login"))
+        return redirect(url_for("main.login"))
 
     return render_template("register.html", form=form)
 
 
-@app.route("/login", methods=["GET", "POST"])
+@bp.route("/login", methods=["GET", "POST"])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for("index"))
+        return redirect(url_for("main.index"))
 
     form = LoginForm()
 
@@ -65,22 +66,22 @@ def login():
             if next_page:
                 return redirect(next_page)
 
-            return redirect(url_for("index"))
+            return redirect(url_for("main.index"))
 
         flash("Неверный email или пароль", "danger")
 
     return render_template("login.html", form=form)
 
 
-@app.route("/logout")
+@bp.route("/logout")
 @login_required
 def logout():
     logout_user()
     flash("Вы вышли из аккаунта", "info")
-    return redirect(url_for("index"))
+    return redirect(url_for("main.index"))
 
 
-@app.route("/posts/create", methods=["GET", "POST"])
+@bp.route("/posts/create", methods=["GET", "POST"])
 @login_required
 def create_post():
     form = PostForm()
@@ -94,12 +95,12 @@ def create_post():
         db.session.commit()
 
         flash("Пост успешно создан", "success")
-        return redirect(url_for("index"))
+        return redirect(url_for("main.index"))
 
     return render_template("create_post.html", form=form)
 
 
-@app.route("/posts/<int:post_id>/edit", methods=["GET", "POST"])
+@bp.route("/posts/<int:post_id>/edit", methods=["GET", "POST"])
 @login_required
 def edit_post(post_id):
     post = Post.query.get_or_404(post_id)
@@ -114,7 +115,7 @@ def edit_post(post_id):
         db.session.commit()
 
         flash("Пост обновлен", "success")
-        return redirect(url_for("index"))
+        return redirect(url_for("main.index"))
 
     if request.method == "GET":
         form.body.data = post.body
@@ -122,7 +123,7 @@ def edit_post(post_id):
     return render_template("edit_post.html", form=form, post=post)
 
 
-@app.route("/posts/<int:post_id>/delete", methods=["POST"])
+@bp.route("/posts/<int:post_id>/delete", methods=["POST"])
 @login_required
 def delete_post(post_id):
     post = Post.query.get_or_404(post_id)
@@ -134,11 +135,11 @@ def delete_post(post_id):
     db.session.commit()
 
     flash("Пост удален", "info")
-    return redirect(url_for("index"))
+    return redirect(url_for("main.index"))
 
 
-@app.route("/profile/<username>")
+@bp.route("/profile/<username>")
 def profile(username):
     user = User.query.filter_by(username=username).first_or_404()
-    posts = Post.query.filter_by(author=user).order_by(Post.created_at.desc()).all()
+    posts = Post.query.filter_by(user_id=user.id).order_by(Post.created_at.desc()).all()
     return render_template("profile.html", user=user, posts=posts)

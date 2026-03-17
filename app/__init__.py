@@ -5,7 +5,8 @@ from config import Config
 
 db = SQLAlchemy()
 login_manager = LoginManager()
-login_manager.login_view = "login"
+login_manager.login_view = "main.login"
+
 
 def create_app():
     app = Flask(__name__)
@@ -14,8 +15,9 @@ def create_app():
     db.init_app(app)
     login_manager.init_app(app)
 
-    from app import models
-    from app import routes
+    from app.models import User, Post
+    from app.routes import bp
+    app.register_blueprint(bp)
 
     with app.app_context():
         db.create_all()

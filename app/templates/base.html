@@ -8,20 +8,20 @@
 </head>
 <body>
     <header class="header">
-        <div class="container nav">
-            <a class="logo" href="{{ url_for('index') }}">Build a Microblog with Flask</a>
+        <div class="header-container nav">
+            <a class="logo" href="{{ url_for('main.index') }}">Build a Microblog with Flask</a>
 
             <nav>
                 <ul class="nav-links">
-                    <li><a href="{{ url_for('index') }}">Главная</a></li>
+                    <li><a href="{{ url_for('main.index') }}">Главная</a></li>
 
                     {% if current_user.is_authenticated %}
-                        <li><a href="{{ url_for('create_post') }}">Создать пост</a></li>
-                        <li><a href="{{ url_for('profile', username=current_user.username) }}">Мой профиль</a></li>
-                        <li><a href="{{ url_for('logout') }}">Выйти</a></li>
+                        <li><a href="{{ url_for('main.create_post') }}">Создать пост</a></li>
+                        <li><a href="{{ url_for('main.profile', username=current_user.username) }}">Мой профиль</a></li>
+                        <li><a href="{{ url_for('main.logout') }}">Выйти</a></li>
                     {% else %}
-                        <li><a href="{{ url_for('login') }}">Вход</a></li>
-                        <li><a href="{{ url_for('register') }}">Регистрация</a></li>
+                        <li><a href="{{ url_for('main.login') }}">Вход</a></li>
+                        <li><a href="{{ url_for('main.register') }}">Регистрация</a></li>
                     {% endif %}
                 </ul>
             </nav>
