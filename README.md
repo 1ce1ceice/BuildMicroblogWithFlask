@@ -4,7 +4,7 @@
 
 это веб-приложение для публикации коротких текстовых постов.  
 Проект реализован в рамках практики на основе проекта из репозитория  
-https://github.com/practical-tutorials/project-based-learning (раздел Python, Web Applications, Build a Microblog with Flask). 
+https://github.com/practical-tutorials/project-based-learning *(раздел Python, Web Applications, Build a Microblog with Flask)*. 
 Пользователи могут регистрироваться, входить в систему, создавать посты, редактировать и удалять их, а также просматривать профили других пользователей.
 
 ##  Функции
