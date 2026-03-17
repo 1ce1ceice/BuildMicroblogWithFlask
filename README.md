@@ -1,5 +1,7 @@
 # Build a Microblog with Flask 
 
+[![Maintainability](https://qlty.sh/gh/1ce1ceice/projects/BuildMicroblogWithFlask/maintainability.svg)](https://qlty.sh/gh/1ce1ceice/projects/BuildMicroblogWithFlask)
+
 ## :question: Описание
 
 это веб-приложение для публикации коротких текстовых постов.  
