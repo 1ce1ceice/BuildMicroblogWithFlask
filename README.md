@@ -55,6 +55,11 @@ pip install -r requirements.txt
 python3 run.py
 ```
 
+## :closed_lock_with_key: Test Account
+
+- **Логин:** test@test.com  
+- **Пароль:** 123456
+
 ## 🌍 Deployment
 
 Live demo: https://buildmicroblogwithflask.onrender.com/
