@@ -55,3 +55,7 @@ python3 run.py
 ## 🌍 Deployment
 
 Live demo: https://buildmicroblogwithflask.onrender.com/
+
+## Demo
+
+![Demo](demo.gif)
